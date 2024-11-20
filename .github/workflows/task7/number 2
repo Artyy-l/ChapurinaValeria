@@ -1,0 +1,13 @@
+-- Выберите по возрастанию ID всех постов, у которых 2 комментария,
+-- title начинается с цифры, а длина content больше 20
+
+select p.post_id from post as p
+where length(p.content) > 20 -- длина > 20
+  and p.title ~ '^[0-9]' -- начинается с цифры
+  and p.post_id in (
+    select p.post_id from post as p
+    left join comment as c on p.post_id = c.post_id
+    group by p.post_id
+    having count(c.comment_id) = 2
+)
+order by p.post_id
