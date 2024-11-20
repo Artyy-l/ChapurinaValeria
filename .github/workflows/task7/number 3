@@ -1,0 +1,18 @@
+-- Выберите по возрастанию ID первых 10 постов, у которых либо нет комментариев, либо он один.
+
+-- выбираем посты, у которых нет комментариев
+select p.post_id from post as p
+left join comment c on p.post_id = c.post_id
+where c.comment_id is null
+
+union -- объединяем выборки
+
+-- выбираем посты, у которых 1 комментарий
+select sub.post_id
+from (select p.post_id, count(c.comment_id) from post as p
+      inner join comment c on p.post_id = c.post_id
+      group by p.post_id
+     ) sub
+where sub.count = 1
+order by post_id
+limit 10;
