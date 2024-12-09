@@ -1,17 +1,66 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import animals.*;
+import food.*;
+
 public class Main {
   public static void main(String[] args) {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    System.out.printf("Hello and welcome!");
+    Horse horse = new Horse("Лошадь1");
+    horse.walk();
+    horse.eat(new Grass());
+    horse.setName("Крутая лошадь");
+    System.out.println("====================================================\n");
 
-    for (int i = 1; i <= 5; i++) {
-      //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-      // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-      System.out.println("i = " + i);
+    Tiger tiger = new Tiger("Тигр Петя");
+    tiger.walk();
+    tiger.eat(new Meat("Говядина"));
+    System.out.println("====================================================\n");
+
+    Eagle eagle = new Eagle("Орёл Вася");
+    eagle.fly();
+    eagle.eat(new Meat("Говядина"));
+    eagle.eat(new Meat("Стейк"));
+    System.out.println("====================================================\n");
+
+    Dolphin dolphin = new Dolphin("Дельфин Макар");
+    dolphin.swim();
+    dolphin.eat(new Meat("Рыба"));
+    System.out.println("====================================================\n");
+
+    Camel camel = new Camel("Верблюд Илья");
+    camel.walk();
+    camel.eat(new Grass());
+    camel.setName("Хороший верблюд");
+    System.out.println("====================================================\n");
+
+    System.out.println("Что будет, если передавать неправильные параметры:");
+
+    // Во избежание копипаста можно написать вот так
+    testAnimalAction(() -> {
+      System.out.println("1. Дать тигру не говядину:");
+      tiger.eat(new Meat("Какое-то мясо"));
+    });
+
+    testAnimalAction(() -> {
+      System.out.println("2. Создать животное с именем \"\":");
+      new Tiger("");
+    });
+  }
+
+  /**
+   * Пытается выполнить переданное действие. Если в процессе выполнения возникает ошибка,
+   * выводит сообщение об исключении красным цветом в консоль, не прерывая выполнение программы.
+   *
+   * @param action действие, которое необходимо выполнить. Это должно быть лямбда-выражение или
+   *               объект, реализующий интерфейс {@link Runnable}.
+   * @throws NullPointerException если переданный параметр {@code action} равен {@code null}.
+   */
+  public static void testAnimalAction(Runnable action) {
+    try {
+      action.run();
+    } catch (Exception ex) {
+      // Выводим ошибку красным цветом для выразительности
+      System.out.println("\u001B[31m" + ex.getMessage() + "\u001B[0m");
     }
   }
 }
